@@ -13,16 +13,18 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import Menu from './components/MenuComponent';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div>
         <Navbar dark color="primary">
           <div className="container">
             <NavbarBrand href="/">NAFEE's CUISINE</NavbarBrand>
           </div>
         </Navbar>
+        <Menu />
       </div>
   );
 }
