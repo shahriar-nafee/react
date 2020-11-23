@@ -13,6 +13,8 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import { DISHES } from '../shared/dishes';
@@ -37,16 +39,14 @@ class Main extends Component {
 
             
             <div >
-                <Navbar dark color = "primary" >
-                    <div className = "container" >
-                        <NavbarBrand href = "/" > NAFEE 's CUISINE</NavbarBrand> 
-                    </div> 
-                </Navbar> 
-                
+         
+                <Header />
                 <Menu dishes={this.state.dishes} 
                     onClick={(dishId) => this.onDishSelect(dishId)} />
                 <DishDetail 
                     dish={this.state.dishes.filter((dish)=> dish.id === this.state.selectedDish)[0]} />
+                <Footer />        
+            
             </div>
         );
 
