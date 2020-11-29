@@ -24,24 +24,24 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
         );
     }
     
-    function RenderComments({comments}){
+    function RenderComments({comments, addComment, dishId}){
         if(comments == null){
             return(
                 <div>
                 </div>
             );
         }
-        const showcmnts = comments.map((cmnt) => {
+        const showcmnts = comments.map((comment) => {
             return(
-                <li key={cmnt.id}>
-                    <p>{cmnt.comment}</p>
-                    <p>--{cmnt.author},
+                <li key={comment.id}>
+                    <p>{comment.comment}</p>
+                    <p>--{comment.author},
                     &nbsp;
                     {new Intl.DateTimeFormat('en-US', {
                             year: 'numeric',
                             month: 'short',
                             day: '2-digit'
-                        }).format(new Date(Date.parse(cmnt.date)))}
+                        }).format(new Date(Date.parse(comment.date)))}
                     </p>
                 </li>
             );
@@ -53,7 +53,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
                 <ul className='list-unstyled'>
                     {showcmnts}
                 </ul>
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     }
@@ -82,7 +82,9 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
                 </div>
                 <div className='row'>
                     <RenderDish dish={props.dish} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                                    addComment={props.addComment}
+                                    dishId={props.dish.id} />
                 </div>
             </div>
             
@@ -113,9 +115,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 
             handleSubmit(values){
                 this.toggleModal();
-
-                console.log('comment:', values);
-                alert('comment:' + JSON.stringify(values));
+                this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
             }
 
     render() {
@@ -129,11 +129,11 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
                     <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                         <ModalHeader toggle={this.toggleModal}> Submit comment</ModalHeader>
                         <ModalBody>
-                            <div className="col-12 col-md-9">
+                            <div className="col-12 col-md-11">
                                 <LocalForm onSubmit={(values) => this.handleSubmit(values)} >
                                     <Row className="form-group">
-                                        <Label htmlFor="rating" md={2}>Rating</Label>
-                                        <Col md={10}>
+                                        <Label htmlFor="rating" md={3}>Rating: </Label>
+                                        <Col md={9}>
                                             <Control.select model=".rating" name="rating" className="form-control" >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -145,16 +145,16 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
                                     </Row>
 
                                     <Row className="form-group">
-                                        <Label htmlFor="author" md={2}>Your name</Label>
-                                        <Col md={10}>
+                                        <Label htmlFor="author" md={3}>Your name: </Label>
+                                        <Col md={9}>
                                             <Control.text model=".author" id="author" name="author" placeholder="Author" className="form-control" validators={{ required, minLength:  minLength(3), maxLength: maxLength(15)}} />
                                             <Errors className="text-danger" model=".author" show="touched" messages={{ required: 'Required', minLength: 'Must be greater than 3 characters', maxLength: 'Must be 15 charaters or less'}} />
                                         </Col>
                                     </Row>
 
                                     <Row className="form-group">
-                                        <Label htmlFor="feedback" md={2}>Your feedback</Label>
-                                        <Col md={10}>
+                                        <Label htmlFor="feedback" md={3}>Your feedback: </Label>
+                                        <Col md={9}>
                                             <Control.textarea model=".message" id="message" name="message" rows="6" className="form-control" validators={{ required }} />
                                             <Errors className="text-danger" model=".message" show="touched" messages={{ required: 'Required'}} />
                                         </Col>
