@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {Card, CardImg, CardImgOverlay, CardBody, CardTitle, CardText, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
     function RenderDish({dish}){
         if(dish == null){
@@ -59,14 +60,30 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
     }
 
     const DishDetail = (props) => {
-        const dish = props.dish;
-        if(dish == null){
+        //const dish = props.dish;
+         if (props.isLoading) {
             return(
-                <div>
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
                 </div>
             );
         }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        
+        
+        
        
+      else if (props.dish != null){  
         return(
             <div className="container">
             
@@ -89,6 +106,13 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
             </div>
             
         );
+      }
+        else {
+            return(
+                <div>
+                </div>
+            );
+        }
     }
     
     
